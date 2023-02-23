@@ -32,8 +32,13 @@ const RestaurantList = ({ navigation }) => {
 
     useEffect(() => {
         getLocation();
-        getRestaurants();
+        
     }, []);
+
+    if (location) {
+      getRestaurants();
+    }
+
 
     let getLocalRestaurants = (data) => {
         const uniqueRestaurants = [
