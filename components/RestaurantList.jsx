@@ -60,12 +60,12 @@ const RestaurantList = ({ navigation }) => {
   };
 
   const getLocation = async () => {
-    if (Platform.OS === "android" && !Device.isDevice) {
-      setErrorMsg(
-        "Oops, this will not work on Snack in an Android Emulator. Try it on your device!"
-      );
-      return;
-    }
+    // if (Platform.OS === "android" && !Device.isDevice) {
+    //   setErrorMsg(
+    //     "Oops, this will not work on Snack in an Android Emulator. Try it on your device!"
+    //   );
+    //   return;
+    // }
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
       setErrorMsg("Permission to access location was denied");
