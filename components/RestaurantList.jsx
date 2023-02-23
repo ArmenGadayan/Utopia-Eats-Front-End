@@ -10,9 +10,14 @@ import {
 } from "react-native";
 import config from "../services/api.json";
 import Constants from "expo-constants";
+import GoalItem from "./GoalItem";
+import axios from "axios";
+
 const { manifest } = Constants;
 
-const api = `http://${manifest.debuggerHost.split(':').shift()}:8000/api/restaurants/`
+const api = `http://${manifest.debuggerHost
+  .split(":")
+  .shift()}:8000/api/restaurants/`;
 
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -30,21 +35,33 @@ const RestaurantList = () => {
 
   const getRestaurants = async () => {
     try {
-      console.log(api)
-      const response = await fetch(api);
-      console.log(("here we wait"))
-      const json = await response.json();
-      console.log("worked")
-      setRestaurants(json);
+      const response = await axios.get(api);
+      setRestaurants(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
+  let junk = () => {
+    return 0
+  }
+
   return (
     <View>
       <View style={styles.textBox}>
         <Text style={styles.text}>{"Restaurants"}</Text>
+        <FlatList 
+            data={restaurants} 
+            renderItem={itemData => {
+              return <GoalItem 
+                        text={itemData.item.restaurant_name} 
+                        id={itemData.item.id}
+                        onDeleteItem={junk}/>
+            }}
+            keyExtractor={(item, index) => {
+              return item.id
+            } }  
+          />
       </View>
     </View>
   );
