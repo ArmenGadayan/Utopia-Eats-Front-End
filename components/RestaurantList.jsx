@@ -11,36 +11,45 @@ import {
 import config from "../services/api.json";
 import Constants from "expo-constants";
 import GoalItem from "./GoalItem";
+import RestaurantItem from "./RestaurantItem";
 import axios from "axios";
 
 const { manifest } = Constants;
 
 const api = `http://${manifest.debuggerHost
   .split(":")
-  .shift()}:8000/api/restaurants/`;
+  .shift()}:8000/api/useritems/?location=999,88`;
 
-const RestaurantList = () => {
+const RestaurantList = ({navigation}) => {
   const [restaurants, setRestaurants] = useState([]);
+  const [localRestaurants, setLocalRestaurants] = useState([]);
 
   useEffect(() => {
     getRestaurants();
   }, []);
 
-  let printTest = () => {
-    if (restaurants.length == 0) {
-      return <Text style={styles.text}>{"Nothing"}</Text>;
-    }
-    return <Text style={styles.text}>{restaurants.fact}</Text>;
+  let getLocalRestaurants = (data) => {
+    const uniqueRestaurants = [...new Map(data.map(v => [v.restaurant_id, v])).values()]
+    setLocalRestaurants(uniqueRestaurants)
   };
 
   const getRestaurants = async () => {
     try {
-      const response = await axios.get(api);
-      setRestaurants(response.data);
+      const response = await axios.get(api)
+      setRestaurants(response.data)
+      getLocalRestaurants(response.data)
     } catch (error) {
       console.error(error);
     }
   };
+
+
+  let onHandlePageChange = (id) => {
+    const chosenRestaurantItems = restaurants.filter(restaurant => {
+      return restaurant.restaurant_id === id;
+    })
+    navigation.navigate('Restaurant', {restaurant_id: id, restaurant_items: chosenRestaurantItems})
+  }
 
   let junk = () => {
     return 0
@@ -51,12 +60,12 @@ const RestaurantList = () => {
       <View style={styles.textBox}>
         <Text style={styles.text}>{"Restaurants"}</Text>
         <FlatList 
-            data={restaurants} 
+            data={localRestaurants} 
             renderItem={itemData => {
-              return <GoalItem 
+              return <RestaurantItem 
                         text={itemData.item.restaurant_name} 
-                        id={itemData.item.id}
-                        onDeleteItem={junk}/>
+                        id={itemData.item.restaurant_id}
+                        onPageChange={onHandlePageChange}/>
             }}
             keyExtractor={(item, index) => {
               return item.id
@@ -79,6 +88,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "white",
-    fontSize: "25px",
+    //fontSize: "25px",
   },
 });
