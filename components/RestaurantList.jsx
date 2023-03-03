@@ -119,9 +119,10 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: "#5e0acc",
     alignItems: "center",
+    marginTop: 40,
   },
   text: {
-    color: "white",
-    //fontSize: "25px",
+    color: "black",
+    fontSize: 25,
   },
 });

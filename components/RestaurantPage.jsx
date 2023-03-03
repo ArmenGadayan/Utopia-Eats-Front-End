@@ -25,6 +25,9 @@ export default RestaurantPage;
 const styles = StyleSheet.create({
   restaurantName: {
     alignItems: "center",
+    justifyContent: "center",
     color: "black",
+    fontSize: 24,
+    marginTop: 50
   },
 });
