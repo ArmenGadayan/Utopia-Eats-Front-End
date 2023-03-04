@@ -12,19 +12,45 @@ import {
   TouchableOpacity,
 } from "react-native";
 import axios from "axios";
+import Constants from "expo-constants";
+
+const { manifest } = Constants;
+const api = `http://${manifest.debuggerHost.split(":").shift()}:8000`;
 
 const ProfilePage = ({ navigation }) => {
   const authContext = useContext(AuthContext);
 
-  const [profile, setProfile] = useState(authContext.userProfile);
+  const [profile, setProfile] = useState({});
+
+  useEffect(() => {
+    getUserProfile(authContext.token.access)
+  }, []);
+
+  let getUserProfile = async (token) => {
+    try {
+      const response = await axios.get(api + "/auth/users/me/", {
+        headers: { Authorization: "JWT " + token },
+      });
+      setProfile(response.data);
+    } catch (err) {
+      console.log(`Error: ${err.message}`);
+    }
+  };
 
   const onPressLogout = () => {
     authContext.logoutUser();
     navigation.navigate("Login")
   };
 
-  const onPressUpdate = () => {
-    
+  const onPressUpdate = async () => {
+    try {
+      await axios.put(api + "/auth/users/me/", profile, {
+        headers: { Authorization: "JWT " + authContext.token.access },
+      });
+    } catch (err) {
+      console.log(`Error: ${err.message}`);
+      console.error("Invalid info.");
+    }
   };
 
   return (
@@ -59,7 +85,7 @@ const ProfilePage = ({ navigation }) => {
       <View style={styles.inputView}>
         <TextInput
           style={styles.inputText}
-          placeholder={profile.height_feet.toString()}
+          placeholder={profile.height_feet != null ? profile.height_feet.toString() : "N/A"}
           placeholderTextColor="#003f5c"
           onChangeText={(text) =>
             setProfile((prevState) => ({
@@ -74,7 +100,7 @@ const ProfilePage = ({ navigation }) => {
       <View style={styles.inputView}>
         <TextInput
           style={styles.inputText}
-          placeholder={profile.height_inches.toString()}
+          placeholder={profile.height_inches != null ? profile.height_inches.toString() : "N/A"}
           placeholderTextColor="#003f5c"
           onChangeText={(text) =>
             setProfile((prevState) => ({
@@ -89,7 +115,7 @@ const ProfilePage = ({ navigation }) => {
       <View style={styles.inputView}>
         <TextInput
           style={styles.inputText}
-          placeholder={profile.weight.toString()}
+          placeholder={profile.weight != null ? profile.weight.toString() : "N/A"}
           placeholderTextColor="#003f5c"
           onChangeText={(text) =>
             setProfile((prevState) => ({
