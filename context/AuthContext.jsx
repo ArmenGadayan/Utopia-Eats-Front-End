@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }) => {
     };
     let [userProfile, setUserProfile] = useState(getUserProf());
 
-    let loginUser = async (object, navigation) => {
+    let loginUser = async (object, navigation, toProfile=false) => {
         //if (!object) e.preventDefault();
 
         const obj = { password: object.password, username: object.username };
@@ -96,7 +96,12 @@ export const AuthProvider = ({ children }) => {
                 );
 
                 getUserProfile(response.data.access);
-                navigation.navigate("Restaurant List");
+                if (toProfile == false) {
+                    navigation.navigate("Restaurant List");
+                }
+                else {
+                    navigation.navigate("Profile");
+                }
             } else {
                 alert("Invalid input placed");
             }
@@ -124,7 +129,7 @@ export const AuthProvider = ({ children }) => {
                     username: obj.username,
                     password: obj.password,
                 };
-                loginUser(object, navigation);
+                loginUser(object, navigation, true);
             } else {
                 alert("Invalid input placed");
             }
