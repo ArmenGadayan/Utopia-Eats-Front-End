@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Button,
   StyleSheet,
@@ -13,7 +13,7 @@ import Constants from "expo-constants";
 import GoalItem from "./GoalItem";
 import RestaurantItem from "./RestaurantItem";
 import axios from "axios";
-
+import AuthContext from "../context/AuthContext";
 import Device from "expo-device";
 import * as Location from "expo-location";
 
@@ -29,6 +29,8 @@ const RestaurantList = ({ navigation }) => {
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+
+  const authContext = useContext(AuthContext);
 
   useEffect(() => {
     getLocation();
@@ -50,7 +52,9 @@ const RestaurantList = ({ navigation }) => {
   const getRestaurants = async () => {
     try {
       const response = await axios.get(
-        api + location.coords.latitude + "," + location.coords.longitude
+        api + location.coords.latitude + "," + location.coords.longitude, {
+          headers: { Authorization: "JWT " + authContext.token.access },
+      }
       );
       setRestaurants(response.data);
       getLocalRestaurants(response.data);
