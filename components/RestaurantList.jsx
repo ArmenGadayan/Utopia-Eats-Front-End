@@ -53,7 +53,7 @@ const RestaurantList = ({ navigation }) => {
     try {
       const response = await axios.get(
         api + location.coords.latitude + "," + location.coords.longitude, {
-          headers: { Authorization: "JWT " + authContext.token.access },
+        headers: { Authorization: "JWT " + authContext.token.access },
       }
       );
       setRestaurants(response.data);
@@ -121,12 +121,12 @@ const styles = StyleSheet.create({
     margin: 8,
     padding: 8,
     borderRadius: 6,
-    backgroundColor: "#5e0acc",
+    backgroundColor: "#9ccfd8",
     alignItems: "center",
     marginTop: 40,
   },
   text: {
     color: "black",
-    fontSize: 25,
+    fontSize: 20,
   },
 });
