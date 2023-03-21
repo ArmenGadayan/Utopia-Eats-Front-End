@@ -7,6 +7,7 @@ import {
   View,
   ScrollView,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import config from "../services/api.json";
 import Constants from "expo-constants";
@@ -16,6 +17,7 @@ import axios from "axios";
 import AuthContext from "../context/AuthContext";
 import Device from "expo-device";
 import * as Location from "expo-location";
+import Loading from "./Loading";
 
 const { manifest } = Constants;
 
@@ -26,6 +28,8 @@ const api = `http://${manifest.debuggerHost
 const RestaurantList = ({ navigation }) => {
   const [restaurants, setRestaurants] = useState([]);
   const [localRestaurants, setLocalRestaurants] = useState([]);
+
+  const [loading, setLoading] = useState(true);
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -52,12 +56,14 @@ const RestaurantList = ({ navigation }) => {
   const getRestaurants = async () => {
     try {
       const response = await axios.get(
-        api + location.coords.latitude + "," + location.coords.longitude, {
-        headers: { Authorization: "JWT " + authContext.token.access },
-      }
+        api + location.coords.latitude + "," + location.coords.longitude,
+        {
+          headers: { Authorization: "JWT " + authContext.token.access },
+        }
       );
       setRestaurants(response.data);
       getLocalRestaurants(response.data);
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -91,25 +97,28 @@ const RestaurantList = ({ navigation }) => {
   };
 
   return (
-    <View>
-      <View style={styles.textBox}>
+    <View style={styles.page}>
+      <View style={styles.title}>
         <Text style={styles.text}>{"Restaurants"}</Text>
-        <FlatList
-          data={localRestaurants}
-          renderItem={(itemData) => {
-            return (
-              <RestaurantItem
-                text={itemData.item.restaurant_name}
-                id={itemData.item.restaurant_id}
-                onPageChange={onHandlePageChange}
-              />
-            );
-          }}
-          keyExtractor={(item, index) => {
-            return item.id;
-          }}
-        />
       </View>
+
+      {loading && <Loading/>}
+
+      <FlatList
+        data={localRestaurants}
+        renderItem={(itemData) => {
+          return (
+            <RestaurantItem
+              text={itemData.item.restaurant_name}
+              id={itemData.item.restaurant_id}
+              onPageChange={onHandlePageChange}
+            />
+          );
+        }}
+        keyExtractor={(item, index) => {
+          return item.id;
+        }}
+      />
     </View>
   );
 };
@@ -121,12 +130,24 @@ const styles = StyleSheet.create({
     margin: 8,
     padding: 8,
     borderRadius: 6,
-    backgroundColor: "#9ccfd8",
     alignItems: "center",
     marginTop: 40,
   },
   text: {
+    alignItems: "center",
+    justifyContent: "center",
     color: "black",
-    fontSize: 20,
+    fontSize: 24,
+    marginTop: 50,
+    paddingBottom: 10,
+    fontWeight: "bold",
   },
+  title: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#898AA6"
+  },
+  page: {
+    height: "100%",
+  }
 });

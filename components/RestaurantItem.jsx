@@ -20,14 +20,17 @@ export default RestaurantItem
 const styles = StyleSheet.create({
     restaurantItem: {
         margin: 8,
-        padding: 8,
+        padding: 20,
         borderRadius: 6,
-        backgroundColor: "#5e0acc",
+        backgroundColor: "#A084DC",
+        alignItems: "center",
     },
     pressedItem: {
         opacity: 0.5
     },
     restaurantText: {
-        color: "white",
+        color: "black",
+        fontWeight: "bold",
+        fontSize: 20,
     },
 })
