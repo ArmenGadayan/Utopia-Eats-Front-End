@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, Pressable, FlatList } from "react-native";
-
+//cccc
 const MenuItem = (props) => {
   const { item } = props;
   return (
@@ -10,8 +10,8 @@ const MenuItem = (props) => {
       <View style={styles.itemInfoBox}>
         <Text style={styles.itemContent}>Cals: {item.calories}</Text>
         {item.protein && <Text style={styles.itemContent}>Protein: {item.protein}g</Text>}
-        {item.carbohydrates && <Text style={styles.itemContent}>Carbs: {item.carbohydrates}g</Text> }
-        {item.total_fat && <Text style={styles.itemContent}>Fats: {item.total_fat}g</Text> }
+        {item.carbohydrates && <Text style={styles.itemContent}>Carbs: {item.carbohydrates}g</Text>}
+        {item.total_fat && <Text style={styles.itemContent}>Fats: {item.total_fat}g</Text>}
       </View>
     </View>
   );
