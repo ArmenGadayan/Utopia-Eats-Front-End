@@ -7,6 +7,7 @@ import {
   View,
   ScrollView,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import config from "../services/api.json";
 import Constants from "expo-constants";
@@ -16,6 +17,7 @@ import axios from "axios";
 import AuthContext from "../context/AuthContext";
 import Device from "expo-device";
 import * as Location from "expo-location";
+import Loading from "./Loading";
 
 const { manifest } = Constants;
 
@@ -26,6 +28,8 @@ const api = `http://${manifest.debuggerHost
 const RestaurantList = ({ navigation }) => {
   const [restaurants, setRestaurants] = useState([]);
   const [localRestaurants, setLocalRestaurants] = useState([]);
+
+  const [loading, setLoading] = useState(true);
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -59,6 +63,7 @@ const RestaurantList = ({ navigation }) => {
       );
       setRestaurants(response.data);
       getLocalRestaurants(response.data);
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -92,10 +97,13 @@ const RestaurantList = ({ navigation }) => {
   };
 
   return (
-    <View>
-      <View style={styles.text}>
+    <View style={styles.page}>
+      <View style={styles.title}>
         <Text style={styles.text}>{"Restaurants"}</Text>
       </View>
+
+      {loading && <Loading/>}
+
       <FlatList
         data={localRestaurants}
         renderItem={(itemData) => {
@@ -126,14 +134,20 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   text: {
+    alignItems: "center",
+    justifyContent: "center",
     color: "black",
-    fontSize: 20,
+    fontSize: 24,
+    marginTop: 50,
+    paddingBottom: 10,
     fontWeight: "bold",
   },
   title: {
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 6,
-    backgroundColor: "#3b3b3b",
+    backgroundColor: "#898AA6"
   },
+  page: {
+    height: "100%",
+  }
 });

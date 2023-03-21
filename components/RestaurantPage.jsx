@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
   title: {
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 6,
-    backgroundColor: "#3b3b3b"
+    backgroundColor: "#898AA6"
   },
 });
