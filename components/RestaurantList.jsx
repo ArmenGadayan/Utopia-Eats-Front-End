@@ -52,9 +52,10 @@ const RestaurantList = ({ navigation }) => {
   const getRestaurants = async () => {
     try {
       const response = await axios.get(
-        api + location.coords.latitude + "," + location.coords.longitude, {
-        headers: { Authorization: "JWT " + authContext.token.access },
-      }
+        api + location.coords.latitude + "," + location.coords.longitude,
+        {
+          headers: { Authorization: "JWT " + authContext.token.access },
+        }
       );
       setRestaurants(response.data);
       getLocalRestaurants(response.data);
@@ -92,24 +93,24 @@ const RestaurantList = ({ navigation }) => {
 
   return (
     <View>
-      <View style={styles.textBox}>
+      <View style={styles.text}>
         <Text style={styles.text}>{"Restaurants"}</Text>
-        <FlatList
-          data={localRestaurants}
-          renderItem={(itemData) => {
-            return (
-              <RestaurantItem
-                text={itemData.item.restaurant_name}
-                id={itemData.item.restaurant_id}
-                onPageChange={onHandlePageChange}
-              />
-            );
-          }}
-          keyExtractor={(item, index) => {
-            return item.id;
-          }}
-        />
       </View>
+      <FlatList
+        data={localRestaurants}
+        renderItem={(itemData) => {
+          return (
+            <RestaurantItem
+              text={itemData.item.restaurant_name}
+              id={itemData.item.restaurant_id}
+              onPageChange={onHandlePageChange}
+            />
+          );
+        }}
+        keyExtractor={(item, index) => {
+          return item.id;
+        }}
+      />
     </View>
   );
 };
@@ -121,12 +122,18 @@ const styles = StyleSheet.create({
     margin: 8,
     padding: 8,
     borderRadius: 6,
-    backgroundColor: "#9ccfd8",
     alignItems: "center",
     marginTop: 40,
   },
   text: {
     color: "black",
     fontSize: 20,
+    fontWeight: "bold",
+  },
+  title: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 6,
+    backgroundColor: "#3b3b3b",
   },
 });
