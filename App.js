@@ -19,14 +19,15 @@ import SignUpPage from "./components/SignUpPage";
 import ProfilePage from "./components/ProfilePage";
 import NavBar from "./components/NavBar";
 import { AuthProvider } from "./context/AuthContext";
-
+import { AppRegistry } from 'react-native';
+import { Provider as PaperProvider } from 'react-native-paper';
 import { navigationRef } from "./utils/RootNavigation";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <>
+    <PaperProvider>
       <StatusBar style="dark" />
       <AuthProvider>
         <NavigationContainer ref={navigationRef}>
@@ -52,7 +53,7 @@ export default function App() {
           <NavBar />
         </NavigationContainer>
       </AuthProvider>
-    </>
+    </PaperProvider>
   );
 }
 

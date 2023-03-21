@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text, Pressable, FlatList } from "react-native";
 
 const MenuItem = (props) => {
-    const {item} = props
+  const { item } = props
   return (
     <View style={styles.item}>
       <Text style={styles.itemContent}>{item.item_name} {item.calories}</Text>
