@@ -34,6 +34,8 @@ const RestaurantList = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
+  const [fetch,setFetch] = useState(false)
+
   const authContext = useContext(AuthContext);
 
   useEffect(() => {
@@ -64,10 +66,16 @@ const RestaurantList = ({ navigation }) => {
       setRestaurants(response.data);
       getLocalRestaurants(response.data);
       setLoading(false);
+      setFetch(fetch)
     } catch (error) {
       console.error(error);
     }
   };
+
+  const onRefresh = () => {
+    setFetch(true)
+    getRestaurants()
+}
 
   const getLocation = async () => {
     // if (Platform.OS === "android" && !Device.isDevice) {
@@ -106,6 +114,8 @@ const RestaurantList = ({ navigation }) => {
 
       <FlatList
         data={localRestaurants}
+        onRefresh={() => onRefresh()}
+        refreshing={fetch}
         renderItem={(itemData) => {
           return (
             <RestaurantItem
