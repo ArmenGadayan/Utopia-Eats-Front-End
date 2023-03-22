@@ -1,5 +1,4 @@
 import { StyleSheet, View, Text, Pressable, FlatList } from "react-native";
-//cccc
 const MenuItem = (props) => {
   const { item } = props;
   return (
