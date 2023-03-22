@@ -17,6 +17,7 @@ const MenuItem = (props) => {
   );
 };
 
+//sevd
 export default MenuItem;
 
 const styles = StyleSheet.create({
